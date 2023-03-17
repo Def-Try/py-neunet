@@ -1,7 +1,9 @@
 import numpy as np
 import time
+import json
 from neunet.__util__ import _progress_bar as progress_bar
 from neunet.NeuralInputs import NeuralInput
+from neunet.NeuralErrors import NeuralError
 
 """Main Neural network class"""
 class NeuralNetwork:
@@ -9,7 +11,7 @@ class NeuralNetwork:
     creates weights, biases matrix, sets up
     basic variables for network to be able to work
 
-    KEYWORD ONLY! EVERY ARGUMENT IS REQUIRED!
+    KEYWORD ONLY! EVERY ARGUMENT IS REQUIRED FOR NEW NETWORK!
     arg - input_size - Input layer size (int)
     arg - output_size - Output layer size (int)
     arg - learning_rate - Hyper parameter. By how much weights should be changed when
@@ -101,3 +103,47 @@ class NeuralNetwork:
         predictions = activations[-1]
         return predictions
 
+    """
+    saves neural network to file
+
+    arg - path - path to where to save (string)
+    """
+    def save(self, path):
+        list_weights = [arr.tolist() for arr in self.weights]
+        list_biases = [arr.tolist() for arr in self.biases]
+        weights = json.dumps(list_weights)
+        biases = json.dumps(list_biases)
+        lr = str(self.learning_rate)
+        sizes = f"{self.input_size}|{self.hidden_layers_count}/{self.hidden_layers_widths[0]}|{self.output_size}"
+
+        with open(path, 'w') as netfile:
+            netfile.write("PYNEUNET\nNEURALNETWORK\n")
+            netfile.write(sizes)
+            netfile.write("\n")
+            netfile.write(weights)
+            netfile.write("\n")
+            netfile.write(biases)
+            netfile.write("\n")
+            netfile.write(lr)
+
+
+"""
+loads neural network from file
+
+arg - path - path from where to load network
+arg - activation - Activation function (def)
+arg - activation_derivative - Actbstion derivative function (def)
+"""
+def load(path, *_, activation, activation_derivative):
+    with open(path, 'r') as netfile:
+        if not netfile.read(len("PYNEUNET\nNEURALNETWORK\n")) == "PYNEUNET\nNEURALNETWORK\n":
+            raise NeuralError("Invalid neural network file!")
+        info = netfile.read()
+        [sizes, weights, biases, lr] = info.split("\n")
+        nn = NeuralNetwork(input_size=int(sizes.split("|")[0]),output_size=int(sizes.split("|")[2]),
+                           learning_rate=float(lr), hidden_layers_count=int(sizes.split("|")[1].split("/")[0]),
+                           hidden_layers_width=int(sizes.split("|")[1].split("/")[1]), activation=activation,
+                           activation_derivative=activation_derivative)
+        nn.weights = [np.array(arr) for arr in json.loads(weights)]
+        nn.biases = [np.array(arr) for arr in json.loads(biases)]
+        return nn

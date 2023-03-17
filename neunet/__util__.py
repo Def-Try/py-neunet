@@ -17,8 +17,14 @@ def _progress_bar(things_done, things_total, width=40, eta=False, time_start=Non
     bar = str(things_done) + "/" + str(things_total) + " [" + "=" * progress_width + ">" + "-" * (width - progress_width) + "]"
     if eta:
         time_elapsed = time.time() - time_start
-        time_remaining = time_elapsed * (things_total - things_done) / things_done
-        eta_str = " ETA: {}s".format(int(time_remaining))
+        time_remaining = round(time_elapsed * (things_total - things_done) / things_done)
+
+        time_string = ""
+        if time_remaining > 60:
+            time_string = str(time_remaining // 60) + "m " + str(time_remaining % 60) + "s"
+        else:
+            time_string = str(time_remaining) + "s"
+        eta_str = " ETA: {}".format(time_string)
     else:
         eta_str = ""
     return bar + eta_str

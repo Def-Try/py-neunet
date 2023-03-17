@@ -27,5 +27,5 @@ class Neural2DInput(NeuralInput):
         if self.data[1] != "flat": raise NeuralError("2DInput should be .flatten() before normalising!")
         for i in range(0, len(self.data[0])):
             pixel = self.data[0][i]
-            self.data[0][i] = (sum(pixel) / len(pixel)) / max(self.data[0])
+            self.data[0][i] = (sum(pixel) / len(pixel)) / 255
         self.data[1] = "norm"

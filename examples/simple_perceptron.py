@@ -36,7 +36,9 @@ nn = NeuralNetwork(input_size=3, output_size=1, learning_rate=0.1,
                    activation=NeuralActivators.sigmoid,
                    activation_derivative=NeuralActivators.sigmoid_derivative)
 # train and print accuracy
-print("Accuracy:",nn.train(train_inputs, train_outputs, epochs=2000))
+print("Accuracy:",nn.train(train_inputs, train_outputs, epochs=20))
+
+nn.save("test_nn.nn")
 
 # take input from user. we are expecting bool-like int
 # list, like "[1,0,0]". i am not implementing try-expect
