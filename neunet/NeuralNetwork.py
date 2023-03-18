@@ -11,7 +11,7 @@ class NeuralNetwork:
     creates weights, biases matrix, sets up
     basic variables for network to be able to work
 
-    KEYWORD ONLY! EVERY ARGUMENT IS REQUIRED FOR NEW NETWORK!
+    KEYWORD ONLY! EVERY ARGUMENT IS REQUIRED!
     arg - input_size - Input layer size (int)
     arg - output_size - Output layer size (int)
     arg - learning_rate - Hyper parameter. By how much weights should be changed when
@@ -19,7 +19,7 @@ class NeuralNetwork:
     arg - hidden_layers_count - Hidden layers count (int)
     arg - hidden_layers_width - Hidden layers width (int)
     arg - activation - Activation function (def)
-    arg - activation_derivative - Actbstion derivative function (def)
+    arg - activation_derivative - Activation derivative function (def)
     """
     def __init__(self, *_, input_size, output_size, learning_rate,
                  hidden_layers_count, hidden_layers_width, activation, activation_derivative):
@@ -48,7 +48,7 @@ class NeuralNetwork:
 
     """
     trains neural network. i am not explaining how, just
-    google it. thia is documentation, not guide or paper
+    google it. this is documentation, not guide or paper
 
     arg - inputs - Training inputs, that are fed
           to neural network (list of NeuralInput)
@@ -57,7 +57,7 @@ class NeuralNetwork:
     arg - epochs - Number of epochs to run training.
           More epochs = more accurate, but still can
           ruin entire network if too much. (int)
-    return - Network accuracy, based on last epoch error.
+    return - Network accuracy, based on last epoch error (number)
     """
     def train(self, inputs, targets, *_, epochs=20000):
         real_inputs, real_targets = inputs.copy(), targets.copy()
@@ -132,7 +132,8 @@ loads neural network from file
 
 arg - path - path from where to load network
 arg - activation - Activation function (def)
-arg - activation_derivative - Actbstion derivative function (def)
+arg - activation_derivative - Activation derivative function (def)
+return - loaded neural network (NeuralNetwork)
 """
 def load(path, *_, activation, activation_derivative):
     with open(path, 'r') as netfile:

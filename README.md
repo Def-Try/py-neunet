@@ -11,3 +11,5 @@ Usable imports:
 * neunet.NeuralErrors.NeuralError
 
 Look for example usages in examples/ folder
+Short documentation can be found at documentation.md
+more examples and bigger documentation can ber found in wiki tab
