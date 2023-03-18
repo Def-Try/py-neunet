@@ -84,7 +84,7 @@ class NeuralNetwork:
                     self.biases[i] += self.learning_rate * deltas[i]
             print(f"err={round(sum(err)/len(err), 5)}", end="\r")
         predictions = self.predict(real_inputs)
-        accuracy = 1 - (np.mean(targets) - np.mean(predictions))
+        accuracy = 1 - abs(np.mean(targets) - np.mean(predictions))
         print()
         inputs = real_inputs
         targets = real_targets
